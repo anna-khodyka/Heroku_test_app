@@ -10,13 +10,16 @@ from sqlalchemy.orm import sessionmaker
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
-POSTGRES_DB = os.environ.get("BD_HOST", "localhost")
 
-# _CONNECTION_STRING = os.getenv("MY_DB_NAME")
-_CONNECTION_STRING = "postgresql+psycopg2://postgres:1234@" + \
-    POSTGRES_DB + "/khodyka_db"
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_USERNAME = os.environ.get("DB_USERNAME", "postgres")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "1234")
+DATA_BASE = os.environ.get("DATA_BASE", "khodyka_db")
 
-engine = create_engine(_CONNECTION_STRING, echo=True)
+engine = create_engine(
+    "postgresql+psycopg2://"+DB_USERNAME+":"+DB_PASSWORD+"@"+DB_HOST + "/" + DATA_BASE, echo=True
+)
+
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 Base = declarative_base()
