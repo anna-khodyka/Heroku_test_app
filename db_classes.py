@@ -13,7 +13,8 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 POSTGRES_DB = os.environ.get("BD_HOST", "localhost")
 
 # _CONNECTION_STRING = os.getenv("MY_DB_NAME")
-_CONNECTION_STRING = "postgres://splhddzolpoudo:d458b141d4a8e1af4c3f39902ef3f0382a8b4a1940a50cc6143320a48389daec@ec2-54-171-25-232.eu-west-1.compute.amazonaws.com:5432/denmhuvepd79ef"
+_CONNECTION_STRING = "postgresql+psycopg2://postgres:1234@" + \
+    POSTGRES_DB + "/khodyka_db"
 
 engine = create_engine(_CONNECTION_STRING, echo=True)
 DBSession = sessionmaker(bind=engine)
