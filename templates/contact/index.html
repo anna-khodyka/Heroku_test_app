@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block header %}
+<nav >
+    <h1 class="container-header">Helper APP</h1>
+    <ul class="navigation">
+        <li class="active-navigation"><a href="{{ url_for('contact.index') }}">Contacts</a></li>
+        <li><a href="{{ url_for('notes.index') }}">Notes</a></li>
+        <li><a href="{{ url_for('clean.clean') }}">Cleaner</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="features">
+    <a href="{{ url_for('contact.index') }}" class="features-button">All contacts</a>
+    <a href="{{ url_for('contact.add') }}" class="features-button">Add a contact</a>
+    <!-- Сортировка -->
+    <form action="{{ url_for('contact.sort') }}" method="post">
+        <select id="sort_type" name="sort_type" class="input" >
+            <option value="1">by Name A-Z</option>
+            <option value="2">by Name Z-A</option>
+            <option value="3" selected>by ID A-Z</option>
+            <option value="4">by ID Z-A</option>
+        </select>      
+        <input type="submit" value="Sort" class="btn">
+    </form>
+    <!-- Поиск -->
+    <form action="{{ url_for('contact.find') }}" method="post">
+        <input name="keyword" id="keyword" value="{{ request.form['keyword'] }}" class="input" required>
+        <input type="submit" value="Find" class="btn">
+    </form>
+</div>
+
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
+            <tr class="table-row">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Birthday</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Tags</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in results %}
+            <tr class="">
+                <td>{{record.id}}</td>
+                <td>{{record.name}}</td>
+                {% for phone in record.phones %}
+                <td>{{phone.phone_value}}</td>
+                {% endfor %}
+                <td>{{record.birthday}}</td>
+                <td>{{record.address}}</td>
+                <td>{{record.email}}</td>
+                <td>{{record.tags}}</td>
+
+                <!--СТолбец кнопочек-->
+                <td>
+                    <form action="{{ url_for('contact.edit', record_id=record.id) }}" method="get">
+                        <button class="btn btn-danger">Edit</button>
+                    </form>
+
+                    <form action="{{ url_for('contact.delete', record_id=record.id) }}" method="post">
+                        <button class="btn btn-success">Delete</button>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
